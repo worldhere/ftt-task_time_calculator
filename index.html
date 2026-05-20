@@ -11,30 +11,144 @@
             box-sizing: border-box;
         }
         
-        body {
+        body.fancy-mode {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body.fancy-mode::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 114, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(102, 126, 234, 0.2) 0%, transparent 50%);
+            z-index: 0;
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .style-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .style-switch label {
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .style-switch input[type="checkbox"] {
+            width: 50px;
+            height: 26px;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .style-switch input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .style-switch input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .style-switch input[type="checkbox"]:checked::before {
+            left: 26px;
         }
         
         .container {
-            background: white;
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(102, 126, 234, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
             padding: 40px;
             max-width: 500px;
             width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         h1 {
             text-align: center;
-            color: #333;
+            color: #667eea;
             margin-bottom: 30px;
             font-size: 28px;
+            text-shadow: 
+                0 0 10px rgba(102, 126, 234, 0.8),
+                0 0 20px rgba(102, 126, 234, 0.6),
+                0 0 30px rgba(102, 126, 234, 0.4);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 
+                    0 0 10px rgba(102, 126, 234, 0.8),
+                    0 0 20px rgba(102, 126, 234, 0.6),
+                    0 0 30px rgba(102, 126, 234, 0.4);
+            }
+            to {
+                text-shadow: 
+                    0 0 15px rgba(118, 75, 162, 0.9),
+                    0 0 25px rgba(118, 75, 162, 0.7),
+                    0 0 35px rgba(118, 75, 162, 0.5);
+            }
         }
         
         .form-group {
@@ -44,8 +158,11 @@
         label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .input-row {
@@ -56,22 +173,31 @@
         input {
             flex: 1;
             padding: 12px 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             font-size: 16px;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
         
         input:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 
+                0 0 0 3px rgba(102, 126, 234, 0.3),
+                0 0 20px rgba(102, 126, 234, 0.2);
+            background: rgba(255, 255, 255, 0.15);
         }
         
         .unit {
             display: flex;
             align-items: center;
-            color: #666;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
             min-width: 40px;
         }
@@ -86,12 +212,33 @@
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
         }
         
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 
+                0 10px 20px rgba(102, 126, 234, 0.4),
+                0 0 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        button:hover::before {
+            left: 100%;
         }
         
         button:active {
@@ -101,38 +248,48 @@
         .result {
             margin-top: 30px;
             padding: 25px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
             border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
             display: none;
         }
         
         .result.show {
             display: block;
-            animation: fadeIn 0.5s ease;
+            animation: slideIn 0.5s ease;
         }
         
-        @keyframes fadeIn {
+        @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-20px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
         
         .result h2 {
-            color: #333;
+            color: #667eea;
             margin-bottom: 20px;
             text-align: center;
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
         }
         
         .result-item {
             display: flex;
             justify-content: space-between;
             padding: 12px 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .result-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            padding-left: 10px;
+            padding-right: 10px;
+            border-radius: 5px;
         }
         
         .result-item:last-child {
@@ -140,28 +297,176 @@
         }
         
         .result-label {
-            color: #555;
+            color: rgba(255, 255, 255, 0.8);
         }
         
         .result-value {
             font-weight: 600;
             color: #667eea;
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
         }
         
         .total {
             margin-top: 15px;
             padding-top: 15px;
             border-top: 2px solid rgba(102, 126, 234, 0.3);
+            background: rgba(102, 126, 234, 0.1);
+            margin: 15px -25px -25px -25px;
+            padding: 15px 25px;
+            border-radius: 0 0 15px 15px;
+            border-top: 2px solid rgba(102, 126, 234, 0.3);
+            border-bottom: none;
+            border-left: none;
+            border-right: none;
         }
         
         .total .result-value {
             font-size: 20px;
             color: #764ba2;
+            text-shadow: 0 0 15px rgba(118, 75, 162, 0.5);
+        }
+        
+        .time-display {
+            text-align: center;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .time-display .time {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.8);
+        }
+        
+        .time-display .date {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+        
+        body.simple-mode .container .time-display {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        body.simple-mode .container .time-display .time {
+            color: #667eea;
+            text-shadow: none;
+        }
+        
+        body.simple-mode .container .time-display .date {
+            color: #666;
+        }
+        
+        body.simple-mode {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        body.simple-mode .style-switch {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        body.simple-mode .style-switch label {
+            color: #333;
+        }
+        
+        body.simple-mode .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            z-index: 10;
+        }
+        
+        body.simple-mode h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: none;
+            animation: none;
+        }
+        
+        body.simple-mode label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        
+        body.simple-mode input {
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #333;
+        }
+        
+        body.simple-mode input::placeholder {
+            color: #999;
+        }
+        
+        body.simple-mode input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+        
+        body.simple-mode .result {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        body.simple-mode .result h2 {
+            color: #333;
+            text-shadow: none;
+        }
+        
+        body.simple-mode .result-label {
+            color: #555;
+        }
+        
+        body.simple-mode .result-value {
+            color: #667eea;
+            text-shadow: none;
+        }
+        
+        body.simple-mode .total {
+            background: transparent;
+        }
+        
+        body.simple-mode .total .result-value {
+            color: #764ba2;
+            text-shadow: none;
         }
     </style>
 </head>
-<body>
+<body class="fancy-mode">
+    <canvas id="particles-canvas"></canvas>
+    
+    <div class="style-switch">
+        <label for="styleToggle">✨ 原版样式</label>
+        <input type="checkbox" id="styleToggle" checked>
+    </div>
+    
     <div class="container">
+        <div class="time-display">
+            <div class="time" id="currentTime">00:00:00</div>
+            <div class="date" id="currentDate">2026年1月1日</div>
+        </div>
+        
         <h1>⏱️ 任务时间预估计算器</h1>
         
         <div class="form-group">
@@ -221,6 +526,117 @@
     </div>
     
     <script>
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = 80;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.color = `rgba(102, 126, 234, ${this.opacity})`;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+            }
+        }
+        
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(102, 126, 234, ${0.2 - distance / 750})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            connectParticles();
+            requestAnimationFrame(animateParticles);
+        }
+        
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+        
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
+        });
+        
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-CN', { hour12: false });
+            const dateStr = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+            
+            document.getElementById('currentTime').textContent = timeStr;
+            document.getElementById('currentDate').textContent = dateStr;
+        }
+        
+        updateTime();
+        setInterval(updateTime, 1000);
+        
+        document.getElementById('styleToggle').addEventListener('change', function() {
+            if (this.checked) {
+                document.body.classList.remove('simple-mode');
+                document.body.classList.add('fancy-mode');
+            } else {
+                document.body.classList.remove('fancy-mode');
+                document.body.classList.add('simple-mode');
+            }
+        });
+        
         function calculate() {
             const totalCount = parseFloat(document.getElementById('totalCount').value) || 0;
             const discardRate = parseFloat(document.getElementById('discardRate').value) || 0;
@@ -234,7 +650,6 @@
                 return;
             }
             
-            // 计算实际需要处理的任务数量（向上取整）
             let actualCount = totalCount;
             const actualCountRow = document.getElementById('actualCountRow');
             
